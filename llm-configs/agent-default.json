@@ -1,0 +1,5 @@
+{
+  "name": "agent-default",
+  "isAlias": true,
+  "delegatesTo": "openai-default"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "claude-default",
+  "provider": "ANTHROPIC",
+  "model": "${CLAUDE_MODEL:claude-sonnet-4-6}",
+  "baseUrl": "https://api.anthropic.com",
+  "apiKey": "${ANTHROPIC_API_KEY}",
+  "defaultTemperature": 0.7,
+  "maxOutputTokens": 8192,
+  "additionalParams": {
+    "thinking": "adaptive",
+    "effort": "high"
+  },
+  "contextWindowTokens": 200000,
+  "capabilities": [
+    "TOOL_CALLING",
+    "VISION",
+    "DOCUMENTS"
+  ],
+  "rateLimit": {
+    "maxConcurrentRequests": 3
+  },
+  "retry": {
+    "enabled": true,
+    "maxAttempts": 5,
+    "baseBackoffMillis": 2000,
+    "maxBackoffMillis": 30000
+  }
+}

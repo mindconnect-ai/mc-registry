@@ -1,0 +1,9 @@
+{
+  "name": "embeddings",
+  "provider": "LM_STUDIO",
+  "model": "${EMBEDDING_MODEL:text-embedding-nomic-embed-text-v1.5}",
+  "baseUrl": "${EMBEDDING_BASE_URL:http://localhost:1234}",
+  "apiKey": "${LM_STUDIO_API_KEY:lm-studio}",
+  "additionalParams": {},
+  "type": "EMBEDDING"
+}

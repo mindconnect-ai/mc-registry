@@ -1,0 +1,9 @@
+{
+  "name": "openai-embeddings",
+  "provider": "OPENAI",
+  "model": "${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}",
+  "baseUrl": "https://api.openai.com",
+  "apiKey": "${OPENAI_API_KEY}",
+  "additionalParams": {},
+  "type": "EMBEDDING"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "gemma-reader",
+  "provider": "LM_STUDIO",
+  "model": "${GEMMA_MODEL:google/gemma-4-e4b}",
+  "baseUrl": "${LM_STUDIO_BASE_URL:http://localhost:1234}",
+  "apiKey": "${LM_STUDIO_API_KEY:lm-studio}",
+  "defaultTemperature": 0.2,
+  "maxOutputTokens": 2048,
+  "additionalParams": {},
+  "contextWindowTokens": 16384
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Runtime utilities",
+  "description": "The helper agents the runtime calls by name: chat titles, memory compression, tool-result summaries, answer review",
+  "version": "1.0.0",
+  "includes": [
+    "title-generator",
+    "conversation-summarizer",
+    "tool-summarizer",
+    "answer-relevance-checker"
+  ]
+}

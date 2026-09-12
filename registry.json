@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "name": "Mindconnect registry",
+  "description": "LLM configs, agents and workflows to import into Mindconnect",
+  "entries": [
+    {
+      "id": "agent-default",
+      "type": "llm-config",
+      "name": "agent-default",
+      "description": "Alias for openai-default — the model the bundled agents run on; repoint it to switch them all",
+      "version": "1.0.0",
+      "path": "llm-configs/agent-default.json",
+      "tags": [
+        "alias"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "openai-default"
+      ]
+    },
+    {
+      "id": "azure-openai-default",
+      "type": "llm-config",
+      "name": "azure-openai-default",
+      "description": "Azure OpenAI chat config, gpt-4o by default",
+      "version": "1.0.0",
+      "path": "llm-configs/azure-openai-default.json",
+      "tags": [
+        "chat",
+        "azure-openai"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "claude-default",
+      "type": "llm-config",
+      "name": "claude-default",
+      "description": "Anthropic chat config, claude-sonnet-4-6 by default",
+      "version": "1.0.0",
+      "path": "llm-configs/claude-default.json",
+      "tags": [
+        "chat",
+        "anthropic"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "claude-haiku-default",
+      "type": "llm-config",
+      "name": "claude-haiku-default",
+      "description": "Anthropic chat config, claude-haiku-4-5 by default",
+      "version": "1.0.0",
+      "path": "llm-configs/claude-haiku-default.json",
+      "tags": [
+        "chat",
+        "anthropic"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "embeddings",
+      "type": "llm-config",
+      "name": "embeddings",
+      "description": "LM Studio embedding config, text-embedding-nomic-embed-text-v1.5 by default",
+      "version": "1.0.0",
+      "path": "llm-configs/embeddings.json",
+      "tags": [
+        "embedding",
+        "lm-studio"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "gemini-default",
+      "type": "llm-config",
+      "name": "gemini-default",
+      "description": "Google Gemini chat config, gemini-2.0-flash by default",
+      "version": "1.0.0",
+      "path": "llm-configs/gemini-default.json",
+      "tags": [
+        "chat",
+        "google-gemini"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "gemma-reader",
+      "type": "llm-config",
+      "name": "gemma-reader",
+      "description": "LM Studio chat config, google/gemma-4-e4b by default",
+      "version": "1.0.0",
+      "path": "llm-configs/gemma-reader.json",
+      "tags": [
+        "chat",
+        "lm-studio"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "lm-studio-default",
+      "type": "llm-config",
+      "name": "lm-studio-default",
+      "description": "LM Studio chat config, openai/gpt-oss-120b by default",
+      "version": "1.0.0",
+      "path": "llm-configs/lm-studio-default.json",
+      "tags": [
+        "chat",
+        "lm-studio"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "openai-default",
+      "type": "llm-config",
+      "name": "openai-default",
+      "description": "OpenAI chat config, gpt-5.4-mini by default",
+      "version": "1.0.0",
+      "path": "llm-configs/openai-default.json",
+      "tags": [
+        "chat",
+        "openai"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "openai-embeddings",
+      "type": "llm-config",
+      "name": "openai-embeddings",
+      "description": "OpenAI embedding config, text-embedding-3-small by default",
+      "version": "1.0.0",
+      "path": "llm-configs/openai-embeddings.json",
+      "tags": [
+        "embedding",
+        "openai"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "speech-to-text",
+      "type": "llm-config",
+      "name": "speech-to-text",
+      "description": "OpenAI speech-to-text config, whisper-1 by default",
+      "version": "1.0.0",
+      "path": "llm-configs/speech-to-text.json",
+      "tags": [
+        "speech-to-text",
+        "openai"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "answer-relevance-checker",
+      "type": "agent",
+      "name": "answer-relevance-checker",
+      "description": "Reviews an agent's draft answer for relevance to the user's question. Returns the unchanged answer, a corrected version, or a BLOCK: line.",
+      "version": "1.0.0",
+      "path": "agents/answer-relevance-checker.json",
+      "tags": [
+        "reviewer"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "code-analyst",
+      "type": "agent",
+      "name": "code-analyst",
+      "description": "Read-only deep-analysis sub-agent. Given specific files or a subsystem, reads the code and explains how it works, traces a flow, or answers a precise technical question with evidence (file:line citations). Call via run_agent when you need understanding, not just location.",
+      "version": "1.0.0",
+      "path": "agents/code-analyst.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "coding-assistant",
+      "type": "agent",
+      "name": "coding-assistant",
+      "description": "Works in a code project: finds its way around with grep and glob, reads files with line numbers, makes targeted edits with file_edit, and runs the build and tests with bash. Choose the project with the chat's folder button first.",
+      "version": "1.0.0",
+      "path": "agents/coding-assistant.json",
+      "tags": [
+        "assistants"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default",
+        "explorer"
+      ]
+    },
+    {
+      "id": "conversation-summarizer",
+      "type": "agent",
+      "name": "conversation-summarizer",
+      "description": "Summarizes older conversation turns for working-memory compression",
+      "version": "1.0.0",
+      "path": "agents/conversation-summarizer.json",
+      "tags": [
+        "utilities"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "default-chat",
+      "type": "agent",
+      "name": "default-chat",
+      "description": "The agent a chat runs on when you did not start it from one. Runs commands, reads files and documents, and delegates web research and file hunting to two specialists.",
+      "version": "1.0.0",
+      "path": "agents/default-chat.json",
+      "tags": [
+        "assistants"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default",
+        "web-researcher",
+        "file-finder",
+        "explorer"
+      ]
+    },
+    {
+      "id": "document-analyst",
+      "type": "agent",
+      "name": "document-analyst",
+      "description": "Sub-agent for long documents (PDF, Word). Given a document path and a question, uses outline/grep/page-range tools to answer with exact page citations — without blowing context on the full text. Call via run_agent.",
+      "version": "1.0.0",
+      "path": "agents/document-analyst.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "explorer",
+      "type": "agent",
+      "name": "explorer",
+      "description": "Read-only exploration sub-agent. Sweeps the filesystem/codebase to locate files, directories and naming conventions and reports the conclusion (paths + brief why), not full file dumps. Call via run_agent for broad 'where is / which files' searches.",
+      "version": "1.0.0",
+      "path": "agents/explorer.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "file-finder",
+      "type": "agent",
+      "name": "file-finder",
+      "description": "Sub-agent that locates files on the user's filesystem by name, type or location hint. Call via run_agent.",
+      "version": "1.0.0",
+      "path": "agents/file-finder.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "planner",
+      "type": "agent",
+      "name": "planner",
+      "description": "Orchestrator agent that decomposes a large task into sub-tasks, delegates each to a specialized sub-agent via run_agent, verifies the results and synthesizes a final answer.",
+      "version": "1.0.0",
+      "path": "agents/planner.json",
+      "tags": [
+        "assistants"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default",
+        "explorer",
+        "code-analyst",
+        "document-analyst",
+        "web-researcher",
+        "verifier"
+      ]
+    },
+    {
+      "id": "poet",
+      "type": "agent",
+      "name": "Poet",
+      "description": "A creative poet who crafts beautiful poems on any topic",
+      "version": "1.0.0",
+      "path": "agents/poet.json",
+      "tags": [
+        "assistants"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "research-lead",
+      "type": "agent",
+      "name": "research-lead",
+      "description": "Research orchestrator. Breaks a research question into independent sub-topics, dispatches them to web-researcher IN PARALLEL via run_agents, fact-checks the findings with the verifier, and answers with a single cited Markdown report. Demo-friendly planner.",
+      "version": "1.0.0",
+      "path": "agents/research-lead.json",
+      "tags": [
+        "assistants"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default",
+        "web-researcher",
+        "verifier"
+      ]
+    },
+    {
+      "id": "summarizer",
+      "type": "agent",
+      "name": "Summarizer",
+      "description": "Writes concise Markdown summaries of any text it is given",
+      "version": "1.0.0",
+      "path": "agents/summarizer.json",
+      "tags": [
+        "utilities"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "title-generator",
+      "type": "agent",
+      "name": "title-generator",
+      "description": "Generates a short title for a conversation from the first user message",
+      "version": "1.0.0",
+      "path": "agents/title-generator.json",
+      "tags": [
+        "utilities"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "tool-summarizer",
+      "type": "agent",
+      "name": "tool-summarizer",
+      "description": "Compresses large tool results after the first LLM turn",
+      "version": "1.0.0",
+      "path": "agents/tool-summarizer.json",
+      "tags": [
+        "utilities"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "url-reader",
+      "type": "agent",
+      "name": "url-reader",
+      "description": "Reads ONE web page and answers a specific question about it, returning only the relevant excerpts. Call via run_agent to keep a large page out of the caller's context.",
+      "version": "1.0.0",
+      "path": "agents/url-reader.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "verifier",
+      "type": "agent",
+      "name": "verifier",
+      "description": "Adversarial verification sub-agent. Given a claim plus the evidence/paths/URLs it rests on, tries to REFUTE it and returns a verdict (confirmed / refuted / uncertain) with reasons. Call via run_agent before trusting an important sub-result.",
+      "version": "1.0.0",
+      "path": "agents/verifier.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "web-researcher",
+      "type": "agent",
+      "name": "web-researcher",
+      "description": "Sub-agent that performs focused web research and returns structured findings. Call via run_agent.",
+      "version": "1.0.0",
+      "path": "agents/web-researcher.json",
+      "tags": [
+        "sub-agents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default",
+        "url-reader"
+      ]
+    },
+    {
+      "id": "approval",
+      "type": "workflow",
+      "name": "approval",
+      "description": "Pauses for a human decision and records it — the halt-and-resume example",
+      "version": "1.0.0",
+      "path": "workflows/approval.json",
+      "tags": [
+        "example"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "classify-numbers",
+      "type": "workflow",
+      "name": "classify-numbers",
+      "description": "Labels each number of a list big or small — a loop with a condition",
+      "version": "1.0.0",
+      "path": "workflows/classify-numbers.json",
+      "tags": [
+        "example"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "file-ingestion",
+      "type": "workflow",
+      "name": "file-ingestion",
+      "description": "Splits a document (Word, PDF, Markdown) into sections and upserts them into a vector store",
+      "version": "1.0.0",
+      "path": "workflows/file-ingestion.json",
+      "tags": [
+        "documents",
+        "knowledge"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "form-demo",
+      "type": "workflow",
+      "name": "form-demo",
+      "description": "Asks for input through a form step and records the answer",
+      "version": "1.0.0",
+      "path": "workflows/form-demo.json",
+      "tags": [
+        "example"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "hello",
+      "type": "workflow",
+      "name": "hello",
+      "description": "Greets a name — the smallest workflow there is",
+      "version": "1.0.0",
+      "path": "workflows/hello.json",
+      "tags": [
+        "example"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "pipeline",
+      "type": "workflow",
+      "name": "pipeline",
+      "description": "Iterates over a list of items — a minimal loop",
+      "version": "1.0.0",
+      "path": "workflows/pipeline.json",
+      "tags": [
+        "example"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "word-to-markdown",
+      "type": "workflow",
+      "name": "word-to-markdown",
+      "description": "Converts a Word document into one Markdown file per section, each with a summary written by the Summarizer agent",
+      "version": "1.0.0",
+      "path": "workflows/word-to-markdown.json",
+      "tags": [
+        "documents"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "summarizer"
+      ]
+    },
+    {
+      "id": "wordreport-gen",
+      "type": "workflow",
+      "name": "wordreport-gen",
+      "description": "Generates a Word report from a template: pick the sections, ingest the source documents, draft each section from them",
+      "version": "1.0.0",
+      "path": "workflows/wordreport-gen.json",
+      "tags": [
+        "documents",
+        "knowledge"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default"
+      ]
+    },
+    {
+      "id": "mindconnect-defaults",
+      "type": "package",
+      "name": "Mindconnect defaults",
+      "description": "Everything a fresh Mindconnect installation ships with: every LLM config, agent and workflow",
+      "version": "1.0.0",
+      "path": "packages/mindconnect-defaults.json",
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "runtime-utilities",
+      "type": "package",
+      "name": "Runtime utilities",
+      "description": "The helper agents the runtime calls by name: chat titles, memory compression, tool-result summaries, answer review",
+      "version": "1.0.0",
+      "path": "packages/runtime-utilities.json",
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "document-kit",
+      "type": "package",
+      "name": "Document kit",
+      "description": "Read long documents, ingest them into a knowledge store, convert Word to Markdown and generate reports from a template",
+      "version": "1.0.0",
+      "path": "packages/document-kit.json",
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    }
+  ]
+}

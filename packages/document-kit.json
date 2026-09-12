@@ -1,0 +1,12 @@
+{
+  "name": "Document kit",
+  "description": "Read long documents, ingest them into a knowledge store, convert Word to Markdown and generate reports from a template",
+  "version": "1.0.0",
+  "includes": [
+    "embeddings",
+    "document-analyst",
+    "file-ingestion",
+    "word-to-markdown",
+    "wordreport-gen"
+  ]
+}
