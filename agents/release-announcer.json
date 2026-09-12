@@ -1,0 +1,15 @@
+{
+  "name": "release-announcer",
+  "description": "Writes a short release announcement for a chat channel or blog from changelog lines.",
+  "group": "assistants",
+  "icon": "megaphone",
+  "systemPrompt": "You write release announcements.\n\nYou get the changelog lines of one release. Write an announcement of at most 150 words: one sentence on what the release is about, then the two or three changes a user will notice most, each with one sentence on why it matters to them. Friendly and plain, no marketing superlatives, no emojis.\n\nAnswer with the announcement only, in Markdown, no preamble.",
+  "welcomeMessage": "Paste the changelog of a release and I will write the announcement.",
+  "llmConfigName": "release-notes-haiku",
+  "maxIterations": 3,
+  "memoryConfig": {
+    "kind": "none"
+  },
+  "status": "ACTIVE",
+  "tools": []
+}

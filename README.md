@@ -31,11 +31,16 @@ an installation to stay on a known state instead of following `main`.
 | `llm-configs/` | `llm-config` | One config per provider (OpenAI, Anthropic, Gemini, Azure OpenAI, LM Studio), embeddings, speech-to-text, and the `agent-default` alias every bundled agent runs on |
 | `agents/` | `agent` | Assistants (`default-chat`, `coding-assistant`, `planner`, `research-lead`, …), their sub-agents, and the utility agents the runtime calls by name |
 | `workflows/` | `workflow` | Small examples (`hello`, `approval`, `form-demo`, …) and document workflows (`file-ingestion`, `word-to-markdown`, `wordreport-gen`) |
-| `packages/` | `package` | `mindconnect-defaults` (everything above), `runtime-utilities`, `document-kit` |
+| `packages/` | `package` | `mindconnect-defaults` (the defaults below), `runtime-utilities`, `document-kit`, `release-notes-kit` |
 
-These are the entities a fresh Mindconnect installation seeds itself with, so
-the registry is also the way to get a default back after you changed or deleted
-it.
+Most of it is what a fresh Mindconnect installation seeds itself with, so the
+registry is also the way to get a default back after you changed or deleted it.
+
+The **Release notes kit** is not a default: an example of a package that brings
+everything new — a model config (`release-notes-haiku`), two agents
+(`changelog-writer`, `release-announcer`) and the workflow that runs them in
+turn (`release-notes`, from `version` and `commits` to a changelog and an
+announcement).
 
 ### API keys
 

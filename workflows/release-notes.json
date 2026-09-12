@@ -1,0 +1,58 @@
+{
+  "@class": "ai.mindconnect.workflow.domain.WorkflowData",
+  "name": "release-notes",
+  "assignResultToVar": null,
+  "resultFrom": "releaseNotes",
+  "steps": [
+    {
+      "@class": "ai.mindconnect.agent.tools.workflow.step.AgentCallData",
+      "name": "write-changelog",
+      "assignResultToVar": "changelog",
+      "agent": "changelog-writer",
+      "message": "Write the changelog lines for these commits:\n\n${commits}",
+      "type": "agentcall"
+    },
+    {
+      "@class": "ai.mindconnect.agent.tools.workflow.step.AgentCallData",
+      "name": "write-announcement",
+      "assignResultToVar": "announcement",
+      "agent": "release-announcer",
+      "message": "Write the announcement for release ${version}. Its changelog:\n\n${changelog}",
+      "type": "agentcall"
+    },
+    {
+      "@class": "ai.mindconnect.workflow.domain.AssignVariablesData",
+      "name": "assemble",
+      "assignResultToVar": null,
+      "variableAssignments": [
+        {
+          "varName": "releaseNotes",
+          "expressionOrVarName": "# Release ${version}\n\n${announcement}\n\n## Changelog\n\n${changelog}"
+        }
+      ],
+      "type": "assignvariables"
+    }
+  ],
+  "uid": null,
+  "params": {
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "string",
+        "description": "The version being released, e.g. 1.4.0"
+      },
+      "commits": {
+        "type": "string",
+        "description": "The commits since the last release, one per line — e.g. the output of git log --oneline v1.3.0..HEAD"
+      }
+    },
+    "required": [
+      "version",
+      "commits"
+    ]
+  },
+  "paramDefaults": {},
+  "subWorkflows": [],
+  "workflowType": null,
+  "type": "workflow"
+}

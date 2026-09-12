@@ -160,6 +160,20 @@
       "homepage": "https://github.com/mindconnect-ai/mc-registry"
     },
     {
+      "id": "release-notes-haiku",
+      "type": "llm-config",
+      "name": "release-notes-haiku",
+      "description": "Claude Haiku at a low temperature — steady, short writing for release notes",
+      "version": "1.0.0",
+      "path": "llm-configs/release-notes-haiku.json",
+      "tags": [
+        "chat",
+        "anthropic"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
       "id": "answer-relevance-checker",
       "type": "agent",
       "name": "answer-relevance-checker",
@@ -444,6 +458,40 @@
       ]
     },
     {
+      "id": "changelog-writer",
+      "type": "agent",
+      "name": "changelog-writer",
+      "description": "Turns a list of commits into changelog lines a user can decide an upgrade on",
+      "version": "1.0.0",
+      "path": "agents/changelog-writer.json",
+      "tags": [
+        "assistants",
+        "release"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "release-notes-haiku"
+      ]
+    },
+    {
+      "id": "release-announcer",
+      "type": "agent",
+      "name": "release-announcer",
+      "description": "Writes a short release announcement for a chat channel or blog from changelog lines",
+      "version": "1.0.0",
+      "path": "agents/release-announcer.json",
+      "tags": [
+        "assistants",
+        "release"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "release-notes-haiku"
+      ]
+    },
+    {
       "id": "approval",
       "type": "workflow",
       "name": "approval",
@@ -556,6 +604,23 @@
       ]
     },
     {
+      "id": "release-notes",
+      "type": "workflow",
+      "name": "release-notes",
+      "description": "From the commits of a release to a changelog and an announcement, one agent after the other",
+      "version": "1.0.0",
+      "path": "workflows/release-notes.json",
+      "tags": [
+        "release"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "changelog-writer",
+        "release-announcer"
+      ]
+    },
+    {
       "id": "mindconnect-defaults",
       "type": "package",
       "name": "Mindconnect defaults",
@@ -582,6 +647,19 @@
       "description": "Read long documents, ingest them into a knowledge store, convert Word to Markdown and generate reports from a template",
       "version": "1.0.0",
       "path": "packages/document-kit.json",
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "release-notes-kit",
+      "type": "package",
+      "name": "Release notes kit",
+      "description": "From a list of commits to a changelog and a release announcement: two agents, the workflow that runs them in turn, and the model they share",
+      "version": "1.0.0",
+      "path": "packages/release-notes-kit.json",
+      "tags": [
+        "release"
+      ],
       "author": "mindconnect",
       "homepage": "https://github.com/mindconnect-ai/mc-registry"
     }

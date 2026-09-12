@@ -1,0 +1,11 @@
+{
+  "name": "Release notes kit",
+  "description": "From a list of commits to a changelog and a release announcement: two agents, the workflow that runs them in turn, and the model they share",
+  "version": "1.0.0",
+  "includes": [
+    "release-notes-haiku",
+    "changelog-writer",
+    "release-announcer",
+    "release-notes"
+  ]
+}

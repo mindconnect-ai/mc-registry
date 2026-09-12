@@ -1,0 +1,22 @@
+{
+  "name": "release-notes-haiku",
+  "provider": "ANTHROPIC",
+  "model": "${CLAUDE_HAIKU_MODEL:claude-haiku-4-5}",
+  "baseUrl": "https://api.anthropic.com",
+  "apiKey": "${ANTHROPIC_API_KEY}",
+  "defaultTemperature": 0.3,
+  "maxOutputTokens": 4096,
+  "additionalParams": {},
+  "contextWindowTokens": 200000,
+  "capabilities": [
+    "TOOL_CALLING",
+    "VISION",
+    "DOCUMENTS"
+  ],
+  "retry": {
+    "enabled": true,
+    "maxAttempts": 3,
+    "baseBackoffMillis": 2000,
+    "maxBackoffMillis": 20000
+  }
+}
