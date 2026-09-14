@@ -19,24 +19,6 @@
   "status": "ACTIVE",
   "tools": [
     {
-      "id": "00000003-0000-0000-0000-000000000250",
-      "name": "list_agents",
-      "description": "Lists all available agents.",
-      "enabled": true
-    },
-    {
-      "id": "00000003-0000-0000-0000-000000000251",
-      "name": "run_agents",
-      "description": "Delegates SEVERAL independent research/verification tasks in parallel (array of {name, message}) and returns all results together. This is your primary tool.",
-      "enabled": true
-    },
-    {
-      "id": "00000003-0000-0000-0000-000000000252",
-      "name": "run_agent",
-      "description": "Delegates ONE self-contained task to a specialized agent. Use only for a genuine follow-up that depends on an earlier result.",
-      "enabled": true
-    },
-    {
       "id": "00000003-0000-0000-0000-000000000253",
       "name": "todo_write",
       "description": "Replaces the working todo list — use it to publish and update your research plan.",

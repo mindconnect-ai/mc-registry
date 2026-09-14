@@ -83,22 +83,6 @@
       "needsApproval": false
     },
     {
-      "id": "00000003-0000-0000-0000-000000000909",
-      "name": "list_agents",
-      "description": "Names the agents you can delegate to — the ones registered on this server and the ones this project defines in .mindconnect/agents.",
-      "enabled": true,
-      "deferred": false,
-      "needsApproval": false
-    },
-    {
-      "id": "00000003-0000-0000-0000-000000000907",
-      "name": "run_agent",
-      "description": "Delegates a task to another agent by name — the explorer, for sweeping an unfamiliar codebase.",
-      "enabled": true,
-      "deferred": false,
-      "needsApproval": false
-    },
-    {
       "id": "00000003-0000-0000-0000-000000000908",
       "name": "process_kill",
       "description": "Ends a process bash started with background=true, with everything it spawned; without a pid lists them.",
