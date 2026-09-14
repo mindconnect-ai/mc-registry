@@ -10,6 +10,9 @@
   "memoryConfig": {
     "kind": "none"
   },
+  "skills": {
+    "mode": "NONE"
+  },
   "status": "ACTIVE",
   "tools": [],
   "llmConfigName": "agent-default"

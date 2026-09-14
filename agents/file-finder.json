@@ -9,6 +9,9 @@
   "memoryConfig": {
     "kind": "none"
   },
+  "skills": {
+    "mode": "ALL"
+  },
   "status": "ACTIVE",
   "tools": [
     {

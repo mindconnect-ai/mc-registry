@@ -16,6 +16,9 @@
     }
   },
   "responseReviewers": [],
+  "skills": {
+    "mode": "ALL"
+  },
   "status": "ACTIVE",
   "tools": [
     {

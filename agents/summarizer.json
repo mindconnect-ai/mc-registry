@@ -11,6 +11,9 @@
     "kind": "windowed",
     "windowSize": 4
   },
+  "skills": {
+    "mode": "NONE"
+  },
   "status": "ACTIVE",
   "tools": [],
   "llmConfigName": "agent-default"
