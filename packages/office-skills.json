@@ -1,9 +1,10 @@
 {
   "name": "Office skills",
-  "description": "Write Word and PowerPoint files from an agent, through the code_execute tool \u2014 no packages beyond Python's standard library",
+  "description": "Write Word, PowerPoint and Excel files from an agent, through the code_execute tool \u2014 no packages beyond Python's standard library",
   "version": "1.0.0",
   "includes": [
     "docx-builder",
-    "pptx-builder"
+    "pptx-builder",
+    "xlsx-builder"
   ]
 }

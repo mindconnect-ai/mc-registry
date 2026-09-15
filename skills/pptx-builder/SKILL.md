@@ -1,6 +1,6 @@
 ---
 name: pptx-builder
-description: Use when the user wants a PowerPoint presentation (.pptx) — a slide deck with a title slide, bullet slides, two-column, table or text slides and speaker notes
+description: Use when the user wants a PowerPoint presentation (.pptx) — a slide deck with title, bullet, two-column, table and text slides, speaker notes, or diagram slides with boxes and arrows that stay connected when moved
 tools: code_execute, bash
 ---
 # Building a PowerPoint deck
@@ -9,7 +9,9 @@ A `.pptx` is a zip of XML parts. The generator below writes one with nothing
 but Python's standard library, from a list of slides — so it runs in the
 `code_execute` container as it is, no packages, no network. It produces a
 clean 16:9 deck: dark-blue titles, Calibri, one blank layout, real tables,
-speaker notes where you give them.
+speaker notes where you give them, and **diagram slides whose arrows are
+real connectors** — they snap to the boxes and follow when someone drags a
+box in PowerPoint.
 
 ## 1. Plan the deck first
 
@@ -58,8 +60,60 @@ spec = {
 ```
 
 Slide types: `title`, `bullets` (a nested list is one level of sub-bullets),
-`two-column`, `table` (first row is the header), `text`. Any slide may carry
-`"notes"`. `**bold**` works inside any text; nothing else is interpreted.
+`two-column`, `table` (first row is the header), `text`, and `diagram`
+(below). Any slide may carry `"notes"`. `**bold**` works inside any text;
+nothing else is interpreted.
+
+### Diagram slides
+
+Architecture, data flow, process, organisation: boxes with arrows between
+them. Every element is its own shape, named for PowerPoint's selection pane
+(`Box: gw`, `Arrow: gw->api (HTTPS)`, `Label: gw->api (HTTPS)`), and every
+arrow is a **connector glued to the boxes' connection points** — move a box
+in PowerPoint and the arrows re-route themselves.
+
+```python
+{"type": "diagram", "title": "Data flow: sensor to dashboard",
+ "canvas": [1000, 560],                 # virtual drawing area, scaled onto the slide
+ "orthogonal": True,                    # arrows as elbow connectors: stay right-angled when boxes move
+ "frames": [{"x": 330, "y": 40, "w": 640, "h": 460, "title": "Cloud"}],      # dashed outline, no fill
+ "lanes":  [],                                                                 # filled bands for columns/rows
+ "boxes": [
+   {"id": "sensor", "x": 40,  "y": 120, "w": 140, "h": 52, "title": "Sensor", "sub": "field device", "style": "actor"},
+   {"id": "gw",     "x": 360, "y": 120, "w": 140, "h": 52, "title": "Gateway", "sub": "MQTT broker"},
+   {"id": "api",    "x": 580, "y": 120, "w": 140, "h": 52, "title": "Cloud API", "sub": "checks token", "style": "accent"},
+   {"id": "db",     "x": 800, "y": 120, "w": 140, "h": 52, "title": "Database", "shape": "ellipse"},
+   {"id": "dash",   "x": 580, "y": 400, "w": 140, "h": 52, "title": "Dashboard"},
+   {"id": "ok",     "x": 360, "y": 400, "w": 140, "h": 52, "title": "Allowed?", "shape": "diamond"},
+ ],
+ "arrows": [
+   {"from": "sensor", "to": "gw",  "label": "MQTT",  "number": 1},
+   {"from": "gw",     "to": "api", "label": "HTTPS", "number": 2},
+   {"from": "api",    "to": "db",  "label": "writes", "accent": True},
+   {"from": "dash",   "to": "db",  "label": "reads", "from_side": "top", "to_side": "bottom", "via": [[650, 240], [870, 240]]},
+   {"from": "ok",     "to": "dash", "label": "yes", "dashed": True, "both": True},
+ ],
+ "texts": [{"x": 40, "y": 540, "text": "Tinted: outside the system.  Amber: checkpoint.", "style": "muted"}],
+ "notes": "What the diagram shows, in sentences."}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `canvas` | width and height of the virtual drawing area; default `[1000, 600]`. Coordinates below are in these units, scaled proportionally onto the slide |
+| `boxes` | `id` unique. `shape`: `box` (rounded, default), `rect`, `ellipse`, `diamond`. `style`: `plain`, `accent` (amber border, for the step that matters), `actor` (tinted, people and external systems), `soft` (lightly tinted, artefacts), `hatched` (somebody else's responsibility), `dashed` (open questions). `fill`/`line` override colours (hex, no `#`). `text_top: True` when another box sits inside |
+| `arrows` | `from`/`to` are box ids. Sides are chosen from the boxes' positions (right→left, bottom→top) unless `from_side`/`to_side` (`top`, `left`, `bottom`, `right`) say otherwise; `from_at`/`to_at` (0–1) slide the anchor along the side. `via` is a list of waypoints for a detour around other boxes; missing corners are added. `label` sits at the longest segment (`label_pos`: `below` or `left` to flip it), `number` draws a numbered circle, `dashed`, `accent` and `both` (arrowheads at both ends) are what they say |
+| `frames` / `lanes` | rectangles with a title top-left: a frame is a dashed outline, a lane a filled band (`color`). Arrows do not connect to them |
+| `texts` | free text: `x`, `y`, `style` containing `muted`, `bold` or `accent`, `anchor` `start`/`middle`/`end` relative to `x` |
+| `orthogonal` | `True` makes every arrow an elbow connector, also the straight ones — they look the same but stay right-angled when a box is dragged. Also settable per arrow |
+
+Layout rules that work: boxes 140 × 52, columns 60 apart (room for a short
+label between two boxes), rows 30–40 apart. Put connected boxes next to each
+other so arrows do not cross other boxes; an unavoidable crossing beats a
+detour across the slide. One accent colour, used sparingly. Two or three
+words on an arrow, the explanation in the notes. Arrows with more than five
+segments cannot be connectors; the generator falls back to a straight line.
+Labels are separate text boxes and do **not** move with a box — say so when
+handing the file over.
 
 ## 3. Run it
 
@@ -117,6 +171,212 @@ def table_shape(sid, x, y, w, rows, header=True):
             f'<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/table">'
             f'<a:tbl><a:tblPr firstRow="1" bandRow="1"/><a:tblGrid>{grid}</a:tblGrid>{"".join(trs)}</a:tbl></a:graphicData></a:graphic></p:graphicFrame>')
 
+
+# ---------------------------------------------------------------- diagrams
+# Boxes are shapes, arrows are connectors glued to the boxes' connection
+# sites (stCxn/endCxn), so they follow when a box is moved in PowerPoint.
+# Labels are separate text boxes: a connector cannot carry text.
+DIAG_COLORS = {"ink": "1B2431", "muted": "5B6774", "accent": "D9741A", "actor": "DCE6F2",
+               "soft": "E4EBF4", "rule": "B1B0B1", "band": "E5F3FA"}
+SIDE_IDX = {"rect": {"top": 0, "left": 1, "bottom": 2, "right": 3},
+            "ellipse": {"top": 0, "left": 2, "bottom": 4, "right": 6}}
+PRESET = {"box": "roundRect", "rect": "rect", "ellipse": "ellipse", "diamond": "diamond"}
+
+def diag_text(sid, name, x, y, w, h, lines, anchor="ctr", align="ctr", margin=45720):
+    """lines: list of (text, size_pt, bold, color)"""
+    ps = "".join(para(t, max(6, round(sz)), b, c, align=align) for t, sz, b, c in lines)
+    return (f'<p:sp><p:nvSpPr><p:cNvPr id="{sid}" name="{escape(name)}"/><p:cNvSpPr txBox="1"/><p:nvPr/></p:nvSpPr>'
+            f'<p:spPr><a:xfrm><a:off x="{int(x)}" y="{int(y)}"/><a:ext cx="{int(w)}" cy="{int(h)}"/></a:xfrm>'
+            f'<a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/></p:spPr>'
+            f'<p:txBody><a:bodyPr wrap="square" lIns="{margin}" tIns="{margin}" rIns="{margin}" bIns="{margin}" anchor="{anchor}"><a:normAutofit/></a:bodyPr><a:lstStyle/>{ps}</p:txBody></p:sp>')
+
+def diag_box(sid, name, x, y, w, h, preset, fill, line_color, line_w, dash, lines, hatched=False, anchor="ctr"):
+    adj = '<a:avLst><a:gd name="adj" fmla="val 6000"/></a:avLst>' if preset == "roundRect" else "<a:avLst/>"
+    if hatched:
+        fill_xml = f'<a:pattFill prst="ltUpDiag"><a:fgClr><a:srgbClr val="{line_color}"/></a:fgClr><a:bgClr><a:srgbClr val="FFFFFF"/></a:bgClr></a:pattFill>'
+    elif fill is None:
+        fill_xml = "<a:noFill/>"
+    else:
+        fill_xml = f'<a:solidFill><a:srgbClr val="{fill}"/></a:solidFill>'
+    ln = ("<a:ln><a:noFill/></a:ln>" if line_color is None else
+          f'<a:ln w="{line_w}"><a:solidFill><a:srgbClr val="{line_color}"/></a:solidFill>' + (f'<a:prstDash val="{dash}"/>' if dash else "") + "</a:ln>")
+    ps = "".join(para(t, max(6, round(sz)), b, c, align="ctr") for t, sz, b, c in lines) or "<a:p/>"
+    return (f'<p:sp><p:nvSpPr><p:cNvPr id="{sid}" name="{escape(name)}"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>'
+            f'<p:spPr><a:xfrm><a:off x="{int(x)}" y="{int(y)}"/><a:ext cx="{int(w)}" cy="{int(h)}"/></a:xfrm>'
+            f'<a:prstGeom prst="{preset}">{adj}</a:prstGeom>{fill_xml}{ln}</p:spPr>'
+            f'<p:txBody><a:bodyPr wrap="square" lIns="45720" tIns="27432" rIns="45720" bIns="27432" anchor="{anchor}"><a:normAutofit/></a:bodyPr><a:lstStyle/>{ps}</p:txBody></p:sp>')
+
+def diag_connector(sid, name, pts, start, end, color, width, dashed, both):
+    """pts: axis-aligned polyline in EMU (2..6 points); start/end: (shape id, site idx)."""
+    n = len(pts) - 1
+    x0, y0 = pts[0]; xn, yn = pts[-1]
+    cxn = f'<a:stCxn id="{start[0]}" idx="{start[1]}"/><a:endCxn id="{end[0]}" idx="{end[1]}"/>'
+    if n == 1:
+        w, h = abs(xn - x0), abs(yn - y0)
+        xfrm = (f'<a:xfrm{" flipH=\"1\"" if xn < x0 else ""}{" flipV=\"1\"" if yn < y0 else ""}>'
+                f'<a:off x="{int(min(x0, xn))}" y="{int(min(y0, yn))}"/><a:ext cx="{int(w)}" cy="{int(h)}"/></a:xfrm>')
+        geom = '<a:prstGeom prst="straightConnector1"><a:avLst/></a:prstGeom>'
+    else:
+        best = _elbow(pts)
+        if best is None:
+            return diag_connector(sid, name, [pts[0], pts[-1]], start, end, color, width, dashed, both)
+        rot, fh, fv, Wl, Hl, adj, preset = best
+        cx, cy = (x0 + xn) / 2, (y0 + yn) / 2
+        offx, offy = (min(x0, xn), min(y0, yn)) if rot == 0 else (cx - Wl / 2, cy - Hl / 2)
+        attrs = (f' rot="{rot * 60000}"' if rot else "") + (' flipH="1"' if fh else "") + (' flipV="1"' if fv else "")
+        xfrm = f'<a:xfrm{attrs}><a:off x="{int(offx)}" y="{int(offy)}"/><a:ext cx="{int(Wl)}" cy="{int(Hl)}"/></a:xfrm>'
+        gds = "".join(f'<a:gd name="adj{i}" fmla="val {int(round(a * 100000))}"/>' for i, a in enumerate(adj, 1))
+        geom = f'<a:prstGeom prst="{preset}"><a:avLst>{gds}</a:avLst></a:prstGeom>'
+    ln = (f'<a:ln w="{width}"><a:solidFill><a:srgbClr val="{color}"/></a:solidFill>'
+          + ('<a:prstDash val="dash"/>' if dashed else "")
+          + ('<a:headEnd type="triangle" w="med" len="med"/>' if both else "")
+          + '<a:tailEnd type="triangle" w="med" len="med"/></a:ln>')
+    return (f'<p:cxnSp><p:nvCxnSpPr><p:cNvPr id="{sid}" name="{escape(name)}"/><p:cNvCxnSpPr>{cxn}</p:cNvCxnSpPr><p:nvPr/></p:nvCxnSpPr>'
+            f'<p:spPr>{xfrm}{geom}{ln}</p:spPr></p:cxnSp>')
+
+def _elbow(P):
+    """rot/flip/adjust values that make bentConnector3/4/5 follow the polyline P (EMU)."""
+    n = len(P) - 1
+    preset = {2: "bentConnector3", 3: "bentConnector3", 4: "bentConnector4", 5: "bentConnector5"}.get(n)
+    if preset is None:
+        return None
+    x0, y0 = P[0]; xn, yn = P[-1]; cx, cy = (x0 + xn) / 2, (y0 + yn) / 2; eps = 1000.0
+    for rot in (0, 90, 270):
+        W_, H_ = (abs(xn - x0), abs(yn - y0)) if rot == 0 else (abs(yn - y0), abs(xn - x0))
+        Wl = W_ if W_ > 1 else eps; Hl = H_ if H_ > 1 else eps
+        for fh in (False, True):
+            for fv in (False, True):
+                loc = []
+                for (px, py) in P:
+                    dx, dy = px - cx, py - cy
+                    lx, ly = (dx, dy) if rot == 0 else ((dy, -dx) if rot == 90 else (-dy, dx))
+                    lx += W_ / 2; ly += H_ / 2
+                    if fh: lx = W_ - lx
+                    if fv: ly = H_ - ly
+                    loc.append((lx, ly))
+                if abs(loc[0][0]) > 2 or abs(loc[0][1]) > 2 or abs(loc[-1][0] - W_) > 2 or abs(loc[-1][1] - H_) > 2: continue
+                if abs(loc[1][1] - loc[0][1]) > 2: continue
+                if n in (2, 3): adj = [loc[1][0] / Wl]
+                elif n == 4: adj = [loc[1][0] / Wl, loc[2][1] / Hl]
+                else: adj = [loc[1][0] / Wl, loc[2][1] / Hl, loc[3][0] / Wl]
+                return (rot, fh, fv, Wl, Hl, adj, preset)
+    W_, H_ = abs(xn - x0), abs(yn - y0); Wl = W_ if W_ > 1 else eps; Hl = H_ if H_ > 1 else eps
+    for fh in (False, True):
+        for fv in (False, True):
+            loc = [((px - x0) if not fh else (x0 - px), (py - y0) if not fv else (y0 - py)) for (px, py) in P]
+            if abs(loc[-1][0] - W_) > 2 or abs(loc[-1][1] - H_) > 2: continue
+            if n == 2 and abs(loc[1][0]) <= 2: return (0, fh, fv, Wl, Hl, [0.0], preset)
+    return None
+
+def _side_point(b, side, at=0.5):
+    x, y, w, h = b["x"], b["y"], b["w"], b["h"]
+    return {"top": (x + w * at, y), "bottom": (x + w * at, y + h), "left": (x, y + h * at), "right": (x + w, y + h * at)}[side]
+
+def _auto_sides(a, b):
+    acx, acy = a["x"] + a["w"] / 2, a["y"] + a["h"] / 2; bcx, bcy = b["x"] + b["w"] / 2, b["y"] + b["h"] / 2
+    dx, dy = bcx - acx, bcy - acy
+    if abs(dx) >= abs(dy): return ("right", "left") if dx > 0 else ("left", "right")
+    return ("bottom", "top") if dy > 0 else ("top", "bottom")
+
+def _route(a, b, arrow, orth):
+    fs, ts = arrow.get("from_side"), arrow.get("to_side")
+    if not fs or not ts:
+        afs, ats = _auto_sides(a, b); fs = fs or afs; ts = ts or ats
+    p0 = _side_point(a, fs, arrow.get("from_at", 0.5)); pn = _side_point(b, ts, arrow.get("to_at", 0.5))
+    via = [tuple(v) for v in arrow.get("via", [])]
+    horiz = lambda s: s in ("left", "right")
+    if via:
+        pts = [p0] + via + [pn]
+    elif horiz(fs) and horiz(ts):
+        if abs(p0[1] - pn[1]) < 1 and not orth: pts = [p0, pn]
+        else: mx = (p0[0] + pn[0]) / 2; pts = [p0, (mx, p0[1]), (mx, pn[1]), pn]
+    elif not horiz(fs) and not horiz(ts):
+        if abs(p0[0] - pn[0]) < 1 and not orth: pts = [p0, pn]
+        else: my = (p0[1] + pn[1]) / 2; pts = [p0, (p0[0], my), (pn[0], my), pn]
+    elif horiz(fs): pts = [p0, (pn[0], p0[1]), pn]
+    else: pts = [p0, (p0[0], pn[1]), pn]
+    out = [pts[0]]
+    for q in pts[1:]:
+        p = out[-1]
+        if abs(p[0] - q[0]) > 0.5 and abs(p[1] - q[1]) > 0.5: out.append((q[0], p[1]))
+        out.append(q)
+    if orth and len(out) == 4: return out, fs, ts
+    clean = [out[0]]
+    for q in out[1:]:
+        if abs(q[0] - clean[-1][0]) > 0.5 or abs(q[1] - clean[-1][1]) > 0.5: clean.append(q)
+    return clean, fs, ts
+
+def diagram_shapes(slide, ax, ay, aw, ah):
+    """Shapes of one diagram slide, drawn on the area (ax, ay, aw, ah) in EMU."""
+    col = dict(DIAG_COLORS, **slide.get("colors", {}))
+    cw, chh = slide.get("canvas", [1000, 600])
+    sc = min(aw / cw, ah / chh); ox = ax + (aw - cw * sc) / 2; oy = ay + (ah - chh * sc) / 2
+    X = lambda v: ox + v * sc; Y = lambda v: oy + v * sc; S = lambda v: v * sc
+    PT = lambda px: max(7, round(px * sc / 12700 * 10) / 10)
+    ts = slide.get("text_size", {}); T_TITLE, T_SUB, T_LBL = ts.get("title", 13), ts.get("sub", 11), ts.get("label", 11)
+    orth_all = bool(slide.get("orthogonal", False))
+    out, sid = [], 10
+    def nid():
+        nonlocal sid; sid += 1; return sid
+    for l in slide.get("lanes", []):
+        out.append(diag_box(nid(), "Lane: " + l.get("title", ""), X(l["x"]), Y(l["y"]), S(l["w"]), S(l["h"]), "roundRect",
+                            l.get("color", col["band"]), None, 0, None, [], anchor="t"))
+        if l.get("title"):
+            out.append(diag_text(nid(), "Lane title: " + l["title"], X(l["x"]), Y(l["y"]), S(l["w"]), S(24), [(l["title"], PT(T_SUB), True, col["muted"])], "t", "l"))
+    for f in slide.get("frames", []):
+        out.append(diag_box(nid(), "Frame: " + f.get("title", ""), X(f["x"]), Y(f["y"]), S(f["w"]), S(f["h"]), "roundRect",
+                            None, col["rule"], 12700, "dot" if f.get("style") == "dotted" else "dash", []))
+        if f.get("title"):
+            out.append(diag_text(nid(), "Frame title: " + f["title"], X(f["x"]), Y(f["y"]), S(f["w"]), S(24), [(f["title"], PT(T_SUB), True, col["muted"])], "t", "l"))
+    boxes, box_ids = {}, {}
+    for b in slide.get("boxes", []):
+        style = b.get("style", "plain"); shape = b.get("shape", "box")
+        fill = b.get("fill", {"actor": col["actor"], "soft": col["soft"]}.get(style, "FFFFFF"))
+        line = b.get("line", col["accent"] if style == "accent" else col["ink"])
+        lw = 28575 if style == "accent" else 12700
+        dash = "dash" if style == "dashed" else None
+        lines = [(b.get("title", ""), PT(T_TITLE), True, col["ink"])]
+        if b.get("sub"): lines.append((b["sub"], PT(T_SUB), False, col["muted"]))
+        i = nid(); boxes[b["id"]] = b; box_ids[b["id"]] = (i, "ellipse" if shape == "ellipse" else "rect")
+        out.append(diag_box(i, "Box: " + b["id"], X(b["x"]), Y(b["y"]), S(b["w"]), S(b["h"]), PRESET.get(shape, "roundRect"),
+                            fill, line, lw, dash, lines, hatched=style == "hatched", anchor="t" if b.get("text_top") else "ctr"))
+    for a in slide.get("arrows", []):
+        if a["from"] not in boxes or a["to"] not in boxes:
+            raise ValueError(f"arrow {a['from']}->{a['to']} names a box that does not exist")
+        pts, fs, tsd = _route(boxes[a["from"]], boxes[a["to"]], a, a.get("orthogonal", orth_all))
+        emu = [(X(x), Y(y)) for x, y in pts]
+        label = a.get("label", "")
+        name = f"{a['from']}->{a['to']}" + (f" ({label})" if label else "")
+        color = col["accent"] if a.get("accent") else col["ink"]
+        s_id, s_kind = box_ids[a["from"]]; e_id, e_kind = box_ids[a["to"]]
+        out.append(diag_connector(nid(), "Arrow: " + name, emu, (s_id, SIDE_IDX[s_kind][fs]), (e_id, SIDE_IDX[e_kind][tsd]),
+                                  color, 28575 if a.get("accent") else 19050, a.get("dashed", False), a.get("both", False)))
+        if label or a.get("number") is not None:
+            i = max(range(len(pts) - 1), key=lambda k: abs(pts[k + 1][0] - pts[k][0]) + abs(pts[k + 1][1] - pts[k][1]))
+            (p, q) = pts[i], pts[i + 1]; mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
+            horizontal = abs(q[0] - p[0]) >= abs(q[1] - p[1])
+            if a.get("number") is not None:
+                r = 11
+                nx, ny = (mx - r, my - r - 14) if horizontal else (mx - r - 14, my - r)
+                out.append(diag_box(nid(), f"Number: {a['number']}", X(nx), Y(ny), S(2 * r), S(2 * r), "ellipse", col["accent"], None, 0, None,
+                                    [(str(a["number"]), PT(T_LBL - 1), True, "FFFFFF")]))
+            if label:
+                lw_, lh_ = 120, 22; below = a.get("label_pos") == "below"; left = a.get("label_pos") == "left"
+                if horizontal: lx, ly = mx - lw_ / 2, (my + 4) if below else (my - lh_ - 4)
+                else: lx, ly = (mx - lw_ - 4) if left else (mx + 4), my - lh_ / 2
+                out.append(diag_text(nid(), "Label: " + name, X(lx), Y(ly), S(lw_), S(lh_),
+                                     [(label, PT(T_LBL), False, col["accent"] if a.get("accent") else col["muted"])],
+                                     "b" if horizontal and not below else ("t" if horizontal else "ctr"),
+                                     "ctr" if horizontal else ("r" if left else "l"), margin=0))
+    for t in slide.get("texts", []):
+        style = t.get("style", ""); anchor = t.get("anchor", "start"); w = S(t.get("w", 600))
+        x = X(t["x"]) - (w / 2 if anchor == "middle" else w if anchor == "end" else 0)
+        color = col["accent"] if "accent" in style else col["muted"] if "muted" in style else col["ink"]
+        out.append(diag_text(nid(), "Text: " + t["text"][:30], x, Y(t["y"]) - S(10), w, S(24),
+                             [(t["text"], PT(t.get("size", T_LBL)), "bold" in style, color)], "t",
+                             {"start": "l", "middle": "ctr", "end": "r"}[anchor], margin=0))
+    return out
+
 def slide_xml(slide):
     kind = slide.get("type", "bullets")
     shapes = []
@@ -146,6 +406,8 @@ def slide_xml(slide):
         elif kind == "text":
             ps = "".join(para(t, 18) for t in slide.get("paragraphs", []))
             shapes.append(textbox(3, "Body", M, top, bw, SLIDE_H - top - M, ps))
+        elif kind == "diagram":
+            shapes += diagram_shapes(slide, M, top, bw, SLIDE_H - top - M)
         else:
             raise ValueError(f"unknown slide type {kind!r}")
     return (f'{XML}<p:sld {NS}><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>'
@@ -253,4 +515,5 @@ After the call, confirm the file exists and is not empty
 (`import os; print(os.path.getsize(path))` in a second call, or `ls -l` via
 `bash` on the host path) and tell the user the path and the slide titles. If
 the run fails, read the traceback: a `KeyError` or `ValueError` names the
-slide that is wrong in the spec.
+slide that is wrong in the spec. Rendering is not possible here, so ask the
+user to page through the deck once in PowerPoint.

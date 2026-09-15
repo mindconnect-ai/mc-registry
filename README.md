@@ -31,14 +31,14 @@ an installation to stay on a known state instead of following `main`.
 | `llm-configs/` | `llm-config` | One config per provider (OpenAI, Anthropic, Gemini, Azure OpenAI, LM Studio), embeddings, speech-to-text, and the `agent-default` alias every bundled agent runs on |
 | `agents/` | `agent` | Assistants (`default-chat`, `coding-assistant`, `planner`, `research-lead`, …), their sub-agents, and the utility agents the runtime calls by name |
 | `workflows/` | `workflow` | Small examples (`hello`, `approval`, `form-demo`, …) and document workflows (`file-ingestion`, `word-to-markdown`, `wordreport-gen`) |
-| `skills/` | `skill` | One `SKILL.md` per skill: `docx-builder` and `pptx-builder` (Word and PowerPoint files through `code_execute`), `db-timetables` and `swiss-transport-ojp` (Deutsche Bahn and Swiss public-transport timetables through `bash`) |
+| `skills/` | `skill` | One `SKILL.md` per skill: `docx-builder`, `pptx-builder` (with diagram slides whose arrows are real connectors) and `xlsx-builder` (Word, PowerPoint and Excel files through `code_execute`), `db-timetables` and `swiss-transport-ojp` (Deutsche Bahn and Swiss public-transport timetables through `bash`) |
 | `packages/` | `package` | `mindconnect-defaults` (the defaults below), `runtime-utilities`, `document-kit`, `release-notes-kit`, `office-skills`, `transport-skills` |
 
 Most of it is what a fresh Mindconnect installation seeds itself with, so the
 registry is also the way to get a default back after you changed or deleted it.
 
 The **skills** are not defaults either. A skill is know-how an agent loads
-when it needs it — the two office skills carry a standard-library Python
+when it needs it — the three office skills carry a standard-library Python
 generator that runs inside the `code_execute` container, the two transport
 skills describe an API and read its key from the environment `bash` inherits.
 Every agent whose skills mode is *all* is offered an imported skill; an agent

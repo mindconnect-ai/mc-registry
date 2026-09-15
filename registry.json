@@ -682,13 +682,29 @@
       "id": "pptx-builder",
       "type": "skill",
       "name": "pptx-builder",
-      "description": "Writes a PowerPoint deck (.pptx) — title, bullet, two-column, table and text slides with speaker notes — through code_execute",
+      "description": "Writes a PowerPoint deck (.pptx) — title, bullet, two-column, table, text and diagram slides with connected arrows, plus speaker notes — through code_execute",
       "version": "1.0.0",
       "path": "skills/pptx-builder/SKILL.md",
       "tags": [
         "skill",
         "office",
         "powerpoint",
+        "code-execute"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "xlsx-builder",
+      "type": "skill",
+      "name": "xlsx-builder",
+      "description": "Writes an Excel workbook (.xlsx) — header row, column widths, number and date formats, formulas, autofilter — through code_execute",
+      "version": "1.0.0",
+      "path": "skills/xlsx-builder/SKILL.md",
+      "tags": [
+        "skill",
+        "office",
+        "excel",
         "code-execute"
       ],
       "author": "mindconnect",
@@ -730,7 +746,7 @@
       "id": "office-skills",
       "type": "package",
       "name": "office-skills",
-      "description": "The two office skills: Word and PowerPoint files through code_execute",
+      "description": "The three office skills: Word, PowerPoint and Excel files through code_execute",
       "version": "1.0.0",
       "path": "packages/office-skills.json",
       "tags": [
