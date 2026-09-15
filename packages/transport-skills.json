@@ -1,0 +1,9 @@
+{
+  "name": "Transport skills",
+  "description": "Timetables and connections from the Deutsche Bahn and Swiss public-transport APIs, through bash with the installation's API keys",
+  "version": "1.0.0",
+  "includes": [
+    "db-timetables",
+    "swiss-transport-ojp"
+  ]
+}

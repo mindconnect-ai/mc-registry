@@ -1,8 +1,8 @@
 # mc-registry
 
 The public registry of [Mindconnect](https://github.com/mindconnect-ai/mindconnect):
-LLM configs, agents and workflows you can import into a Mindconnect installation
-from its admin UI.
+LLM configs, agents, workflows and skills you can import into a Mindconnect
+installation from its admin UI.
 
 A registry is a plain GitHub repository — an index (`registry.json`) and the
 entity files it points at. There is no server behind it: Mindconnect reads the
@@ -31,10 +31,18 @@ an installation to stay on a known state instead of following `main`.
 | `llm-configs/` | `llm-config` | One config per provider (OpenAI, Anthropic, Gemini, Azure OpenAI, LM Studio), embeddings, speech-to-text, and the `agent-default` alias every bundled agent runs on |
 | `agents/` | `agent` | Assistants (`default-chat`, `coding-assistant`, `planner`, `research-lead`, …), their sub-agents, and the utility agents the runtime calls by name |
 | `workflows/` | `workflow` | Small examples (`hello`, `approval`, `form-demo`, …) and document workflows (`file-ingestion`, `word-to-markdown`, `wordreport-gen`) |
-| `packages/` | `package` | `mindconnect-defaults` (the defaults below), `runtime-utilities`, `document-kit`, `release-notes-kit` |
+| `skills/` | `skill` | One `SKILL.md` per skill: `docx-builder` and `pptx-builder` (Word and PowerPoint files through `code_execute`), `db-timetables` and `swiss-transport-ojp` (Deutsche Bahn and Swiss public-transport timetables through `bash`) |
+| `packages/` | `package` | `mindconnect-defaults` (the defaults below), `runtime-utilities`, `document-kit`, `release-notes-kit`, `office-skills`, `transport-skills` |
 
 Most of it is what a fresh Mindconnect installation seeds itself with, so the
 registry is also the way to get a default back after you changed or deleted it.
+
+The **skills** are not defaults either. A skill is know-how an agent loads
+when it needs it — the two office skills carry a standard-library Python
+generator that runs inside the `code_execute` container, the two transport
+skills describe an API and read its key from the environment `bash` inherits.
+Every agent whose skills mode is *all* is offered an imported skill; an agent
+naming its skills has to name it.
 
 The **Release notes kit** is not a default: an example of a package that brings
 everything new — a model config (`release-notes-haiku`), two agents
@@ -54,6 +62,8 @@ your installation resolves at call time:
 | `GEMINI_API_KEY` | `gemini-default` |
 | `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT` | `azure-openai-default` |
 | `LM_STUDIO_API_KEY` (optional, defaults to `lm-studio`) | the LM Studio configs |
+| `DB_CLIENT_ID`, `DB_API_KEY` | the `db-timetables` skill (DB API Marketplace, Timetables plan) |
+| `OPENTRANSPORTDATA_API_KEY` | the `swiss-transport-ojp` skill (opentransportdata.swiss, OJP 2.0) |
 
 Models can be overridden the same way (`OPENAI_MODEL`, `CLAUDE_MODEL`, …) — see
 the `${VAR:default}` placeholders in each file. `agent-default` points at
@@ -64,7 +74,9 @@ agent to another model.
 
 1. Add the entity file under the directory for its kind — the same JSON the
    Mindconnect admin UI stores, without an `id` (the importing installation
-   assigns its own).
+   assigns its own). A skill is a `skills/<name>/SKILL.md` — front matter
+   with `name`, `description` and `tools`, then the instructions; only that
+   file is imported, so anything the skill needs goes into its text.
 2. Add an entry to `registry.json`: `id`, `type`, `name`, `path`, a
    `description`, and in `requires` the ids of entries it depends on (the LLM
    config an agent names, the sub-agents it calls, the agents a workflow runs).

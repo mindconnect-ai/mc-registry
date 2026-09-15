@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "Mindconnect registry",
-  "description": "LLM configs, agents and workflows to import into Mindconnect",
+  "description": "LLM configs, agents, workflows and skills to import into Mindconnect",
   "entries": [
     {
       "id": "agent-default",
@@ -658,6 +658,98 @@
       "path": "packages/release-notes-kit.json",
       "tags": [
         "release"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "docx-builder",
+      "type": "skill",
+      "name": "docx-builder",
+      "description": "Writes a Word document (.docx) with headings, lists, tables and inline emphasis through code_execute — standard-library Python, no packages",
+      "version": "1.0.0",
+      "path": "skills/docx-builder/SKILL.md",
+      "tags": [
+        "skill",
+        "office",
+        "word",
+        "code-execute"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "pptx-builder",
+      "type": "skill",
+      "name": "pptx-builder",
+      "description": "Writes a PowerPoint deck (.pptx) — title, bullet, two-column, table and text slides with speaker notes — through code_execute",
+      "version": "1.0.0",
+      "path": "skills/pptx-builder/SKILL.md",
+      "tags": [
+        "skill",
+        "office",
+        "powerpoint",
+        "code-execute"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "db-timetables",
+      "type": "skill",
+      "name": "db-timetables",
+      "description": "Reads the Deutsche Bahn Timetables API through bash: departures, delays, platform changes at a German station; needs DB_CLIENT_ID and DB_API_KEY",
+      "version": "1.0.0",
+      "path": "skills/db-timetables/SKILL.md",
+      "tags": [
+        "skill",
+        "transport",
+        "deutsche-bahn",
+        "api"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "swiss-transport-ojp",
+      "type": "skill",
+      "name": "swiss-transport-ojp",
+      "description": "Reads the Swiss public-transport OJP 2.0 API (opentransportdata.swiss) through bash: stops, departures, connections; needs OPENTRANSPORTDATA_API_KEY",
+      "version": "1.0.0",
+      "path": "skills/swiss-transport-ojp/SKILL.md",
+      "tags": [
+        "skill",
+        "transport",
+        "sbb",
+        "api"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "office-skills",
+      "type": "package",
+      "name": "office-skills",
+      "description": "The two office skills: Word and PowerPoint files through code_execute",
+      "version": "1.0.0",
+      "path": "packages/office-skills.json",
+      "tags": [
+        "skills",
+        "office"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry"
+    },
+    {
+      "id": "transport-skills",
+      "type": "package",
+      "name": "transport-skills",
+      "description": "The two timetable skills: Deutsche Bahn and Swiss public transport, each with its own API key",
+      "version": "1.0.0",
+      "path": "packages/transport-skills.json",
+      "tags": [
+        "skills",
+        "transport"
       ],
       "author": "mindconnect",
       "homepage": "https://github.com/mindconnect-ai/mc-registry"
