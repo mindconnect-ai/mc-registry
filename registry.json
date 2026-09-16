@@ -666,8 +666,8 @@
       "id": "docx-builder",
       "type": "skill",
       "name": "docx-builder",
-      "description": "Writes a Word document (.docx) with headings, lists, tables and inline emphasis through code_execute — standard-library Python, no packages",
-      "version": "1.0.0",
+      "description": "Writes a Word document (.docx) with headings, lists, tables and inline emphasis through code_execute, with the mc_office generator of the code-exec-python image",
+      "version": "2.0.0",
       "path": "skills/docx-builder/SKILL.md",
       "tags": [
         "skill",
@@ -682,8 +682,8 @@
       "id": "pptx-builder",
       "type": "skill",
       "name": "pptx-builder",
-      "description": "Writes a PowerPoint deck (.pptx) — title, bullet, two-column, table, text and diagram slides with connected arrows, plus speaker notes — through code_execute",
-      "version": "1.0.0",
+      "description": "Writes a PowerPoint deck (.pptx) — title, bullet, two-column, table, text and diagram slides with connected arrows, plus speaker notes — through code_execute, with the mc_office generator of the code-exec-python image",
+      "version": "2.0.0",
       "path": "skills/pptx-builder/SKILL.md",
       "tags": [
         "skill",
@@ -698,8 +698,8 @@
       "id": "xlsx-builder",
       "type": "skill",
       "name": "xlsx-builder",
-      "description": "Writes an Excel workbook (.xlsx) — header row, column widths, number and date formats, formulas, autofilter — through code_execute",
-      "version": "1.0.0",
+      "description": "Writes an Excel workbook (.xlsx) — header row, column widths, number and date formats, formulas, autofilter — through code_execute, with the mc_office generator of the code-exec-python image",
+      "version": "2.0.0",
       "path": "skills/xlsx-builder/SKILL.md",
       "tags": [
         "skill",
@@ -746,8 +746,8 @@
       "id": "office-skills",
       "type": "package",
       "name": "office-skills",
-      "description": "The three office skills: Word, PowerPoint and Excel files through code_execute",
-      "version": "1.0.0",
+      "description": "The three office skills: Word, PowerPoint and Excel files through code_execute and its code-exec-python image",
+      "version": "2.0.0",
       "path": "packages/office-skills.json",
       "tags": [
         "skills",

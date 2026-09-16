@@ -31,7 +31,7 @@ an installation to stay on a known state instead of following `main`.
 | `llm-configs/` | `llm-config` | One config per provider (OpenAI, Anthropic, Gemini, Azure OpenAI, LM Studio), embeddings, speech-to-text, and the `agent-default` alias every bundled agent runs on |
 | `agents/` | `agent` | Assistants (`default-chat`, `coding-assistant`, `planner`, `research-lead`, …), their sub-agents, and the utility agents the runtime calls by name |
 | `workflows/` | `workflow` | Small examples (`hello`, `approval`, `form-demo`, …) and document workflows (`file-ingestion`, `word-to-markdown`, `wordreport-gen`) |
-| `skills/` | `skill` | One `SKILL.md` per skill: `docx-builder`, `pptx-builder` (with diagram slides whose arrows are real connectors) and `xlsx-builder` (Word, PowerPoint and Excel files through `code_execute`), `db-timetables` and `swiss-transport-ojp` (Deutsche Bahn and Swiss public-transport timetables through `bash`) |
+| `skills/` | `skill` | One `SKILL.md` per skill: `docx-builder`, `pptx-builder` (with diagram slides whose arrows are real connectors) and `xlsx-builder` (Word, PowerPoint and Excel files through `code_execute`, calling the `mc_office` generators of Mindconnect's `code-exec-python` image), `db-timetables` and `swiss-transport-ojp` (Deutsche Bahn and Swiss public-transport timetables through `bash`) |
 | `packages/` | `package` | `mindconnect-defaults` (the defaults below), `runtime-utilities`, `document-kit`, `release-notes-kit`, `office-skills`, `transport-skills` |
 
 Most of it is what a fresh Mindconnect installation seeds itself with, so the

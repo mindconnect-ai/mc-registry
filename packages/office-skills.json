@@ -1,7 +1,7 @@
 {
   "name": "Office skills",
-  "description": "Write Word, PowerPoint and Excel files from an agent, through the code_execute tool \u2014 no packages beyond Python's standard library",
-  "version": "1.0.0",
+  "description": "Write Word, PowerPoint and Excel files from an agent, through the code_execute tool and the mc_office generators of its code-exec-python image",
+  "version": "2.0.0",
   "includes": [
     "docx-builder",
     "pptx-builder",
