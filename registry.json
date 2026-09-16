@@ -273,6 +273,24 @@
       ]
     },
     {
+      "id": "presentation-builder",
+      "type": "agent",
+      "name": "presentation-builder",
+      "description": "Builds ONE PowerPoint deck (.pptx) from a brief — outline, facts, or an existing deck to revise — in the chat's working directory, and returns only its path and slide titles. Call via run_agent so the drafting stays out of the caller's context.",
+      "version": "1.0.0",
+      "path": "agents/presentation-builder.json",
+      "tags": [
+        "sub-agents",
+        "office"
+      ],
+      "author": "mindconnect",
+      "homepage": "https://github.com/mindconnect-ai/mc-registry",
+      "requires": [
+        "agent-default",
+        "pptx-builder"
+      ]
+    },
+    {
       "id": "explorer",
       "type": "agent",
       "name": "explorer",
